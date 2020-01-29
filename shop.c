@@ -7,7 +7,7 @@ struct Item {
 	int id;
 	int prix;
 	int qqte_inventaire;
-	char nom[10];
+	char nom[99];
 };
 typedef struct Item item;
 
@@ -15,9 +15,12 @@ void addItem(item * varItem){
 
 }
 
-void display_inventory(item * varItem){
+void display_inventory(){
 	//afficher nom
 	//afficher qtté
+	for (int i = 0; i < compteur; ++i){
+		/* code */
+	}
 }
 
 void display_shop(item * varItem){
@@ -35,9 +38,10 @@ int main(){
 	int exit = 0;
 	int choix = 0;
 	//definition des structures de bases
-	item chocolat = {1,10,0,{'C','h','o','c','o','l','a','t'}};
-	char prenom[chocolat.id] = chocolat.nom;
+	item chocolat = {1,10,0,{"Chocolat"}};
+	char prenom[99][99];
 
+	strcpy(prenom[chocolat.id],chocolat.nom);
 	while (exit == 0){
 		printf("Menu :\n[1] Inventaire \n[2] Magasin \n[3] Nouvel Item dans le magasin ! \n[4] Quitter");
 		scanf("%d",&choix);
@@ -47,14 +51,14 @@ int main(){
 				break;
 			case 2:
 				printf("___________________________\n          Magasin          \n___________________________\n");
-				display_shop(chocolat.id, &chocolat);
+				display_shop(&chocolat);
 				//boucle display
 
 
 				//achat
 				scanf("%d",&choix);
 				if (choix <= compteur){
-					printf("Vous avez achete : %d",prenom[choix]);
+					printf("Vous avez achete : %s\n",prenom[choix]);
 				}
 				break;
 			case 3:
@@ -68,3 +72,4 @@ int main(){
 		}
 	}
 }
+
