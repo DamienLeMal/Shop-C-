@@ -12,16 +12,13 @@ struct Item {
 typedef struct Item item;
 
 
-void sort(item * varItem,item * varItem2){
+int sort(item * varItem,item * varItem2){
 	int result = 0;
 	int holder = 0;
 	char holder_c[1][99];
 	result = strncmp((*varItem).nom,(*varItem2).nom,20);
 	if(result > 0) {
       printf("str1 > str2");
-      holder = (*varItem).id;
-      (*varItem).id = (*varItem2).id;
-      (*varItem2).id = holder;
 
       holder = (*varItem).prix;
       (*varItem).prix = (*varItem2).prix;
@@ -34,10 +31,10 @@ void sort(item * varItem,item * varItem2){
       strcpy(holder_c[1],(*varItem).nom);
       strcpy((*varItem).nom,(*varItem2).nom);
       strcpy((*varItem2).nom,holder_c[1]);
-   } else if(result < 0) {
-      printf("str1 < str2");
+
+      return 0;
    } else {
-      printf("str1 = str2");
+      return 1;
    }
 }
 
@@ -53,8 +50,7 @@ void display_inventory(){
 	}
 }
 
-void display_shop(item * varItem){
-	
+void display_shop(item * varItem){ 
 	//afficher [x]
 	printf("[%d] ", (*varItem).id);
 	//afficher nom
@@ -67,6 +63,7 @@ void display_shop(item * varItem){
 int main(){
 	int exit = 0;
 	int choix = 0;
+	int test = 0;
 	//definition des structures de bases
 	item article[99];
 	article[0].id = 1;
@@ -92,11 +89,12 @@ int main(){
 				break;
 			case 2:
 				//sorting
+				test = 0;
 				while (test == 0){
 					test = 0;
-					for (int i = 0; i < compteur; ++i){
+					for (int i = 0; i < compteur-1; ++i){
 				
-
+						test += sort(&article[i],&article[i+1]);
 
 					}
 				}
