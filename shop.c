@@ -11,7 +11,6 @@ struct Item {
 };
 typedef struct Item item;
 
-
 int sort(item * varItem,item * varItem2){
 	int result = 0;
 	int holder = 0;
@@ -30,7 +29,6 @@ int sort(item * varItem,item * varItem2){
         strcpy(holder_c,(*varItem).nom);
         strcpy((*varItem).nom,(*varItem2).nom);
         strcpy((*varItem2).nom,holder_c);
-
         return 0;
     } else {
         return 1;
@@ -42,23 +40,19 @@ void addItem(item * varItem){
 	char name[99];
 	int price = 0;
 	printf("___________________________\n        Nouvel Item        \n___________________________\n");
-		//C ici que ça bug
-
-		printf("Choisissez un nom :");
-		scanf("%s",name);
-      printf("\n");
-    	
-		strcpy(varItem->nom,name);
-    	printf("Choisissez un prix :");
-
-		scanf("%d",&price);
-    	printf("\n");
-		varItem->prix = price;
-		varItem->id = compteur;
+	printf("Choisissez un nom : ");
+	scanf("%s",name);
+    printf("\n");
+	strcpy(varItem->nom,name);
+    printf("Choisissez un prix : ");
+	scanf("%d",&price);
+    printf("\n");
+	varItem->prix = price;
+	compteur += 1;
+	varItem->id = compteur;
 }
 
 void display_inventory(item * varItem){
-
 	//afficher nom
 	printf("%s ---", (*varItem).nom);
 	//afficher qqte
@@ -80,32 +74,34 @@ int main(){
 	int exit = 0;
 	int choix = 0;
 	int test = 0;
+	int coin = 100;
+	int profit = 0;
 	//definition des structures de bases
 	item article[99];
 	article[0].id = 1;
 	article[0].prix = 10;
 	article[0].qqte_inventaire = 1;
-	strcpy(article[0].nom,"Chocolat");
+	strcpy(article[0].nom,"Banane");
 
 	article[1].id = 2;
 	article[1].prix = 20;
 	article[1].qqte_inventaire = 0;
-	strcpy(article[1].nom,"htez");
+	strcpy(article[1].nom,"Chocolat");
 
 	article[2].id = 3;
 	article[2].prix = 20;
 	article[2].qqte_inventaire = 0;
-	strcpy(article[2].nom,"Banane");
+	strcpy(article[2].nom,"Milkshake");
 
 	while (exit == 0){
-		printf("___________________________\n           Menu           \n___________________________\n[1] Inventaire \n[2] Magasin \n[3] Nouvel Item dans le magasin ! \n[4] Quitter\n");
+		printf("___________________________\n           Menu           \n___________________________\nBourse : %d£\n[1] Inventaire \n[2] Magasin \n[3] Nouvel Item dans le magasin ! \n[4] Quitter\n",coin);
 		scanf("%d",&choix);
 		switch (choix){
 			case 1:
 				choix = 0;
-				printf("___________________________\n        Inventaire         \n___________________________\n");
+				printf("___________________________\n        Inventaire         \n___________________________\nBourse : %d£\n",coin);
 				//boucle display
-				for (int i = 0; i < compteur - 1; ++i){
+				for (int i = 0; i < compteur; ++i){
 					if (article[i].qqte_inventaire != 0){
 						display_inventory(&article[i]);
 					}
@@ -115,14 +111,13 @@ int main(){
 				break;
 			case 2:
 				choix = 0;
-        int choix_shop = 0;
-				printf("___________________________\n          Magasin          \n___________________________\n");
+        		int choix_shop = 0;
+				printf("___________________________\n          Magasin          \n___________________________\nBourse : %d£\n",coin);
 
 				test = 0;
 				while (test == 0){
 					test = 0;
 					for (int i = 0; i < compteur-1; ++i){
-				
 						test += sort(&article[i],&article[i+1]);
 
 					}
@@ -132,18 +127,25 @@ int main(){
 				for (int i = 0; i < compteur; ++i){
 					display_shop(&article[i]);
 				}
-
 				//achat
-				scanf("%d",&choix_shop);
-				if (choix_shop <= compteur){
-					article[choix].qqte_inventaire += 1;
-					printf("Vous avez achete : %s\n",article[choix_shop].nom);
+				test = 0;
+				while (test == 0){
+					scanf("%d",&choix_shop);
+					if ((choix_shop <= compteur)&&(choix_shop != 0)){
+						article[choix_shop-1].qqte_inventaire += 1;
+						coin -= article[choix_shop-1].prix;
+						printf("Vous avez achete : %s\nBourse : %d£\n",article[choix_shop-1].nom,coin);
+					}else if (choix_shop == 0){
+							test =1;
+					}
 				}
 				break;
 			case 3:
 				choix = 0;
-        		compteur += 1;
-				addItem(&article[compteur - 1]);
+				addItem(&article[compteur]);
+				profit = article[compteur-1].prix * 3;
+				coin += profit;
+				printf("Vous gagnez %d£ grace a la vente de votre \" %s \" \n",profit,article[compteur-1].nom);
 				break;
 			case 4:
 				exit = 1;
@@ -155,4 +157,3 @@ int main(){
 		}
 	}
 }
-
