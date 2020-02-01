@@ -37,15 +37,36 @@ int sort(item * varItem,item * varItem2){
 
 void addItem(item * varItem){
 	int test = 0;
+	int testLenght = 0;
 	char name[99];
+  	char temp;
 	int price = 0;
 	printf("___________________________\n        Nouvel Item        \n___________________________\n");
-	printf("Choisissez un nom : ");
-	scanf("%s",name);
+	while (test == 0){
+		printf("Choisissez un nom (max 16 characteres): ");
+  		scanf("%c",&temp);
+		fgets(name,99,stdin);
+		testLenght = strlen(name);
+		//fgets recupere aussi le \n donc on le retire
+		if (name[testLenght-1] == '\n'){
+			name[testLenght-1] = '\0';
+		}
+		//test longueur
+		if (testLenght <= 16){
+			test = 1;
+		}else{
+			printf("Trop long !\n");
+		}
+	}
     printf("\n");
 	strcpy(varItem->nom,name);
-    printf("Choisissez un prix : ");
-	scanf("%d",&price);
+	while (test == 1){
+    	printf("Choisissez un prix (max : 999£): ");
+		scanf("%d",&price);
+		if (price <= 999){
+			test = 0;
+		}
+    }
     printf("\n");
 	varItem->prix = price;
 	compteur += 1;
@@ -53,18 +74,58 @@ void addItem(item * varItem){
 }
 
 void display_inventory(item * varItem){
+	int digitLenght = 0;
+	int nameLenght = 0;
+	int dashNumber = 25;
+	//Effet jolis dans l'inventaire
+	if ((*varItem).qqte_inventaire < 10){
+		digitLenght = 1;
+	}else if ((*varItem).qqte_inventaire < 100){
+		digitLenght = 2;
+	}else if ((*varItem).qqte_inventaire < 1000){
+		digitLenght = 3;
+	}
+	nameLenght = strlen((*varItem).nom);
+	dashNumber -= digitLenght + nameLenght;
 	//afficher nom
-	printf("%s ---", (*varItem).nom);
+	printf("%s ", (*varItem).nom);
+	//afficher effet jolis
+	for (int i = 0; i < dashNumber; ++i){
+		printf("-");
+	}
 	//afficher qqte
 	printf(" %d \n", (*varItem).qqte_inventaire);
-	
 }
 
-void display_shop(item * varItem){ 
+void display_shop(item * varItem){
+	int digitLenght = 0;
+	int idLenght = 0;
+	int nameLenght = 0;
+	int dashNumber = 20;
+	//Effet jolis dans le shop
+	if ((*varItem).prix < 10){
+		digitLenght = 1;
+	}else if ((*varItem).prix < 100){
+		digitLenght = 2;
+	}else if ((*varItem).prix < 1000){
+		digitLenght = 3;
+	}
+	if ((*varItem).id < 10){
+		idLenght = 1;
+	}else if ((*varItem).id < 100){
+		idLenght = 2;
+	}
+	nameLenght = strlen((*varItem).nom);
+	dashNumber -= digitLenght + idLenght + nameLenght;
+
 	//afficher [x]
 	printf("[%d] ", (*varItem).id);
 	//afficher nom
-	printf("%s ---", (*varItem).nom);
+	printf("%s ", (*varItem).nom);
+	//afficher effet jolis
+	for (int i = 0; i < dashNumber; ++i){
+		printf("-");
+	}
 	//afficher prix
 	printf(" %d £\n", (*varItem).prix);
 
