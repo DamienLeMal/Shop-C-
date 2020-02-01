@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+//pour changer les a en A
+#include <ctype.h>
 
 int compteur = 3;
 
@@ -29,9 +31,9 @@ int sort(item * varItem,item * varItem2){
         strcpy(holder_c,(*varItem).nom);
         strcpy((*varItem).nom,(*varItem2).nom);
         strcpy((*varItem2).nom,holder_c);
-        return 0;
-    } else {
         return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -57,6 +59,8 @@ void addItem(item * varItem){
 		}else{
 			printf("Trop long !\n");
 		}
+    	//change la premiere lettre en majuscule, evite des problemes lors du tri
+    	name[0] = toupper(name[0]);
 	}
     printf("\n");
 	strcpy(varItem->nom,name);
@@ -117,7 +121,6 @@ void display_shop(item * varItem){
 	}
 	nameLenght = strlen((*varItem).nom);
 	dashNumber -= digitLenght + idLenght + nameLenght;
-
 	//afficher [x]
 	printf("[%d] ", (*varItem).id);
 	//afficher nom
@@ -128,7 +131,6 @@ void display_shop(item * varItem){
 	}
 	//afficher prix
 	printf(" %d £\n", (*varItem).prix);
-
 }
 
 int main(){
@@ -175,12 +177,11 @@ int main(){
         		int choix_shop = 0;
 				printf("___________________________\n          Magasin          \n___________________________\nBourse : %d£\n",coin);
 
-				test = 0;
-				while (test == 0){
+				test = 1;
+				while (test != 0){
 					test = 0;
 					for (int i = 0; i < compteur-1; ++i){
 						test += sort(&article[i],&article[i+1]);
-
 					}
 				}
 				//boucle display
@@ -197,7 +198,7 @@ int main(){
 						coin -= article[choix_shop-1].prix;
 						printf("Vous avez achete : %s\nBourse : %d£\n",article[choix_shop-1].nom,coin);
 					}else if (choix_shop == 0){
-							test =1;
+						test =1;
 					}
 				}
 				break;
